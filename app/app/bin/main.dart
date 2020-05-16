@@ -1,5 +1,6 @@
-
 import 'dart:ffi' as ffi;
+
+// dart ./bin/main.dart
 
 typedef PrintHelloFunc = ffi.Pointer<ffi.Void> Function();
 typedef PrintHello = ffi.Pointer<ffi.Void> Function();
