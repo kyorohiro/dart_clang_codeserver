@@ -64,7 +64,7 @@ void main() {
   }
   // pointer -> uint8slist // 0, 1, 2, 3, 4, ....19
   
-  typed.Uint8List bufferAsUint8List =  toUint8List(buffer, 20);
+  typed.Uint8List bufferAsUint8List = toUint8List(buffer, 20);
   for(var i=0;i<bufferAsUint8List.length;i++){
     print(bufferAsUint8List[i]);
   }
@@ -72,4 +72,9 @@ void main() {
   bufferAsUint8List[0] = 110;
   print('${HEAP8[buffer]}'); // 110
 
+  print("${HEAP8.runtimeType}");//
+  typed.Uint8List bufferAsUint8List2 = (HEAP8 as typed.Int8List).buffer.asUint8List(buffer, 20);
+  for(var i=0;i<bufferAsUint8List2.length;i++){
+    print(bufferAsUint8List2[i]);
+  }
 }
