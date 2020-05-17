@@ -9,7 +9,7 @@
 // find . -name "*.o" | xargs rm
 // find . -name "*.wasm" | xargs rm
 // emcc ky.c -o ky.o 
-// emcc ky.o -o libky.js -s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall", "cwrap"]' -s EXPORTED_FUNCTIONS="['_print_hello']"
+// emcc ky.o -o libky.js -s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall", "cwrap"]' -s EXPORTED_FUNCTIONS="['_print_hello','_sum_int','_sum_double','_new_buffer','_init_buffer','_destroy_buffer']"
 // cp libky.js ../web/libky.js 
 // cp libky.wasm ../web/libky.wasm
 void print_hello() {
@@ -20,7 +20,7 @@ int sum_int(int a, int b){
     return a + b;
 }
 
-int sum_double(double a, double b) {
+double sum_double(double a, double b) {
     return a + b;
 }
 
@@ -35,7 +35,6 @@ char* init_buffer(char* buffer, int size) {
     }
     return buffer;
 }
-
 
 void destroy_buffer(char* p) {
   free(p);
