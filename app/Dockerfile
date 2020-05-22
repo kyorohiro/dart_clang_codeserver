@@ -1,11 +1,12 @@
 FROM ubuntu:20.04
 ENV DEBIAN_FRONTEND noninteractive
 
-# install vscode (code-server)
+# install code-server
 WORKDIR /works
-COPY ./build_resource/code-server-3.0.0-linux-x86_64.tar.gz /works/code-server-3.0.0-linux-x86_64.tar.gz
-RUN tar -xzf code-server-3.0.0-linux-x86_64.tar.gz -C ./ --strip-components 1
-RUN /works/code-server --install-extension ms-vscode.cpptools
+RUN apt-get update
+RUN apt-get install -y curl
+RUN curl -sSOL https://github.com/cdr/code-server/releases/download/v3.3.1/code-server_3.3.1_amd64.deb
+RUN dpkg -i code-server_3.3.1_amd64.deb
 
 # install C
 WORKDIR /works
@@ -40,10 +41,12 @@ RUN sh -c 'wget -qO- https://dl-ssl.google.com/linux/linux_signing_key.pub | apt
 RUN sh -c 'wget -qO- https://storage.googleapis.com/download.dartlang.org/linux/debian/dart_stable.list > /etc/apt/sources.list.d/dart_stable.list'
 RUN apt-get update
 RUN apt-get -y install dart
-RUN /works/code-server --install-extension Dart-Code.dart-code
 
 ENV PATH=${PATH}:/lib/dart/bin
 ENV PATH="${PATH}:/root/.pub-cache/bin"
 
+# install vscode plugin
+RUN code-server --install-extension Dart-Code.dart-code
+RUN code-server --install-extension ms-vscode.cpptools
 
-CMD ["/works/code-server", "--auth","none", "--host","0.0.0.0","--port","8443", "/app"]
+CMD ["code-server", "--auth","none", "--host","0.0.0.0","--port","8443", "/app"]
