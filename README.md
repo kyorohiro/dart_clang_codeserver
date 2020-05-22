@@ -1,15 +1,6 @@
 C and Dart 's Code-Server
 dart:ffi and dart:js 
 
-# preperation
-
-Get code-server-3.0.0-linux-x86_64.tar.gz from https://github.com/cdr/code-server/releases/download/3.0.0/code-server-3.0.0-linux-x86_64.tar.gz  And copy to app/build_resource/code-server-3.0.0-linux-x86_64.tar.gz
-
-
-[ref]
-https://github.com/cdr/code-server/releases
-
-
 # create env
 
 ```
