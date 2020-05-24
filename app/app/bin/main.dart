@@ -130,6 +130,16 @@ ffi.Pointer<ffi.Uint8> productGetName(ffi.Pointer<ffi.Uint8> context) {
   return _product_get_name(context);
 }
 
+// int product_get_name_length(Product*)
+typedef ProductGetNameLengthFunc = ffi.Int32 Function(ffi.Pointer<ffi.Uint8> context);
+typedef ProductGetNameLength = int Function(ffi.Pointer<ffi.Uint8> context);
+ProductGetNameLength _product_get_name_length = dylib
+      .lookup<ffi.NativeFunction<ProductGetNameLengthFunc>>('product_get_name_length')
+      .asFunction<ProductGetNameLength>();
+
+int productGetNameLength(ffi.Pointer<ffi.Uint8> context) {
+  return _product_get_name_length(context);
+}
 
 
 
@@ -167,7 +177,7 @@ void main(List<String> args) {
   var context = newProduct();
   initProduct(context, name, 9, 300);
   print("price:${productGetPrice(context)}");
-  print("name:${conv.utf8.decode(productGetName(context).asTypedList(9),allowMalformed: true)}");
+  print("name:${conv.utf8.decode(productGetName(context).asTypedList(productGetNameLength(context)),allowMalformed: true)}");
   destroyProduct(context);
   
 }

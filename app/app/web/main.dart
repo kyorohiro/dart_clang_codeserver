@@ -71,6 +71,10 @@ int productGetPrice(int context) {
   return _prodcut_get_price.apply([context]);
 }
 
+js.JsFunction _prodcut_get_name_length =  Module.callMethod('cwrap',['product_get_name_length','number',['number']]);
+int productGetNameLength(int context) {
+  return _prodcut_get_name_length.apply([context]);
+}
 void main() {  
   // hello
   printHello(); // Hello!!
@@ -109,12 +113,12 @@ void main() {
 
   // product
   var name = newBuffer(20);
-  typed.Uint8List nameAsUint8List =   (HEAP8 as typed.Int8List).buffer.asUint8List(name, 20);
+  typed.Uint8List nameAsUint8List =  (HEAP8 as typed.Int8List).buffer.asUint8List(name, 20);
   nameAsUint8List.setAll(0, conv.ascii.encode("dart book"));
   var context = newProduct();
   initProduct(context, name, 9, 300);
   print("price:${productGetPrice(context)}");
-  var nameAsString = (HEAP8 as typed.Int8List).buffer.asUint8List(productGetName(context), 9);
+  var nameAsString = (HEAP8 as typed.Int8List).buffer.asUint8List(productGetName(context), productGetNameLength(context));
   print("name:${conv.utf8.decode(nameAsString,allowMalformed: true)}");
   destroyProduct(context);
 
