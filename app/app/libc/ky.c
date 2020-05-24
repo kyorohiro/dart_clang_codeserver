@@ -62,8 +62,9 @@ void destroy_product(Product* context) {
     free(context);
 }
 
-Product* init_product(Product* context, const char* name, int name_length, int price) {
+Product* init_product(Product* context, char* name, int name_length, int price) {
     // copy text
+    //context->name = name;
     context->name = malloc(sizeof(char)*(name_length+1));
     // +1 is safe guard
     context->name_length = (name_length + 1);
