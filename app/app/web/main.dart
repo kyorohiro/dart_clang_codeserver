@@ -1,5 +1,6 @@
 import 'dart:js' as js;
 import 'dart:typed_data' as typed;
+import 'dart:convert' as conv;
 
 // webdev serve --hostname=0.0.0.0
 js.JsObject Module = js.context['Module'];
@@ -42,6 +43,34 @@ typed.Uint8List toUint8List(int buffer, int length) {
   return _to_uint8list.apply([buffer, length]);
 }
 
+// ---
+// object
+// ---
+js.JsFunction _new_product =  Module.callMethod('cwrap',['new_product','number',[]]);
+int newProduct() {
+  return _new_product.apply([]);
+}
+
+js.JsFunction _init_product =  Module.callMethod('cwrap',['init_product','number',['number','number','number','number']]);
+int initProduct(int context, int name, int nameLength, int price) {
+  return _init_product.apply([context, name, nameLength, price]);
+}
+
+js.JsFunction _destroy_product =  Module.callMethod('cwrap',['destroy_product','void',['number']]);
+int destroyProduct(int context) {
+  return _destroy_product.apply([context]);
+}
+
+js.JsFunction _prodcut_get_name =  Module.callMethod('cwrap',['product_get_name','number',['number']]);
+int productGetName(int context) {
+  return _prodcut_get_name.apply([context]);
+}
+
+js.JsFunction _prodcut_get_price =  Module.callMethod('cwrap',['product_get_price','number',['number']]);
+int productGetPrice(int context) {
+  return _prodcut_get_price.apply([context]);
+}
+
 void main() {  
   // hello
   printHello(); // Hello!!
@@ -77,4 +106,16 @@ void main() {
   for(var i=0;i<bufferAsUint8List2.length;i++){
     print(bufferAsUint8List2[i]);
   }
+
+  // product
+  var name = newBuffer(20);
+  typed.Uint8List nameAsUint8List =   (HEAP8 as typed.Int8List).buffer.asUint8List(name, 20);
+  nameAsUint8List.setAll(0, conv.ascii.encode("dart book"));
+  var context = newProduct();
+  initProduct(context, name, 9, 300);
+  print("price:${productGetPrice(context)}");
+  var nameAsString = (HEAP8 as typed.Int8List).buffer.asUint8List(productGetName(context), 9);
+  print("name:${conv.utf8.decode(nameAsString,allowMalformed: true)}");
+  destroyProduct(context);
+
 }
