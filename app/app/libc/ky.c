@@ -59,6 +59,10 @@ Product* new_product(const char* name, int name_length, int price) {
 }
 
 void destroy_product(Product* context) {
+    if(context->name != NULL) {
+        free(context->name);
+        context->name = NULL;
+    }
     free(context);
 }
 
